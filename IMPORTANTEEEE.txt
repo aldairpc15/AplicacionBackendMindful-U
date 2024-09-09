@@ -1,0 +1,14 @@
+
+------ link -SWAGGER
+http://localhost:8080/swagger-ui/index.html
+
+------ link SECURITY NO AWS
+http://localhost:6868/swagger-ui/index.html
+
+------ link SECURITY CON AWS
+http://(IP):6868/swagger-ui/index.html
+----------
+
+------ Nombre de la Base de Datos (PgAdmin) 
+dbprojectbcompany
+----------
