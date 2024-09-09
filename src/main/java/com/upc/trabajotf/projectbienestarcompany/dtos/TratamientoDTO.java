@@ -19,4 +19,3 @@ public class TratamientoDTO {
 
     private Usuario usuario;
 }
-//Prueba 01
