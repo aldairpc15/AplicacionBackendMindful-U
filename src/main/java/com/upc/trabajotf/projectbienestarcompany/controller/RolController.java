@@ -65,4 +65,15 @@ public class RolController {
             return m.map(x,RolDTO.class);
         }).collect(Collectors.toList());
     }
+
+    //Seguridad
+        @PostMapping("/save")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Rol> saveRole(@RequestBody Rol rol) {
+        return new ResponseEntity<>(rService.registrar(rol), HttpStatus.OK);
+    }
+    @GetMapping("/list")
+    public ResponseEntity<List<Rol>> getRoles(){
+        return new ResponseEntity<>(rService.list(),HttpStatus.OK);
+    }
 }
