@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
 public class UsuarioController {
 
     @Autowired
+    private PasswordEncoder bcrypt;
+    
+    @Autowired
     private UsuarioServiceInterfaces usuarioServiceInterfaces;
 
     //Listar Usuario
@@ -55,5 +58,28 @@ public class UsuarioController {
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable("id") Integer id){
         usuarioServiceInterfaces.eliminar(id);
+    }
+
+    //Seguridad
+     @PostMapping("/save")
+    public ResponseEntity<Integer> saveUser(@RequestBody User user) {
+        if (uService.buscarUser(user.getUsername()) == 0) {
+            String bcryptPassword = bcrypt.encode(user.getPassword());
+            user.setPassword(bcryptPassword);
+            uService.insertUser(user);
+            return new ResponseEntity<Integer>(1, HttpStatus.OK);
+        }
+        return new ResponseEntity<Integer>(0, HttpStatus.BAD_REQUEST);
+    }
+    @PostMapping("/save/{user_id}/{rol_id}")
+    //@PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Integer> saveUseRol(@PathVariable("user_id") Long user_id,
+                                              @PathVariable("rol_id") Long rol_id){
+        return new ResponseEntity<Integer>(uService.insertUserRol(user_id, rol_id),HttpStatus.OK);
+        //return new ResponseEntity<Integer>(uService.insertUserRol2(user_id, rol_id),HttpStatus.OK);
+    }
+    @GetMapping("/list")
+    public ResponseEntity<List<User>> getUsers(){
+        return new ResponseEntity<>(uService.list(),HttpStatus.OK);
     }
 }
